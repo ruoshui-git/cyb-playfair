@@ -1,5 +1,45 @@
-# From class spec
+# Usage
+INPUT OUTPUT EXAMPLES:
 
+    make run ARGS="encode WHITEHAT PLAYFIREXMBCDGHKNOQSTUVWZ"
+    # ZGRUMDPV
+
+    make run ARGS="decode ZGRUMDPV PLAYFIREXMBCDGHKNOQSTUVWZ"
+    # WHITEHAT
+    
+    make run ARGS="encode AGOODFOODBOOKISACOOKBOOK PLAYFIREXMBCDGHKNOQSTUVWZ"
+    # YDQEQGASQGDKVTMKLDQEVTDKVT
+
+    make run ARGS="decode YDQEQGASQGDKVTMKLDQEVTDKVT PLAYFIREXMBCDGHKNOQSTUVWZ"
+    # AGOXODFOODBOOKISACOXOKBOOK
+
+    # Note: AGO_ODFOODBOOKISACO_OKBOOK < easy to eliminate x's by hand.
+
+    make run ARGS="encode TODAYISAGOODDAYTODIE OZAKDIREXMBCVGHYNPQSTUFWL"
+    # UZMENRPDBKIMMENUIMBV
+
+    make run ARGS="decode UZMENRPDBKIMMENUIMBV OZAKDIREXMBCVGHYNPQSTUFWL"
+    # TODAYISAGOODDAYTODIE
+
+
+Program input:
+
+    make run ARGS="encode [ciphertext] [keytext]"
+
+Output:
+
+[encoded Text]
+
+
+Program input:
+
+    make run ARGS="decode [plaintext] [keytext]"
+
+Output:
+
+[decoded Text]
+
+# Algorithm
 
 ENCODE
     1. If the letters are on the same row, use the letters below them to replace them.
@@ -31,46 +71,8 @@ Plaintext: Any string of letters from A-Z, no numbers or special characters. You
 You can use this to help you simulate output:
 https://www.dcode.fr/playfair-cipher 
 
+# More from class spec
 
-Program input:
-make run ARGS="encode ciphertext keytext"
-Output:
-encoded Text
-
-Program input:
-make run ARGS="decode plaintext keytext"
-Output:
-decoded Text
-
-_____________________
-INPUT OUTPUT EXAMPLES:
-
-$make run ARGS="encode WHITEHAT PLAYFIREXMBCDGHKNOQSTUVWZ"
-ZGRUMDPV
-
-$make run ARGS="decode ZGRUMDPV PLAYFIREXMBCDGHKNOQSTUVWZ"
-WHITEHAT
-___
-$make run ARGS="encode AGOODFOODBOOK PLAYFIREXMBCDGHKNOQSTUVWZ"
-YDQEQGASQGDKVTMKLDQEVTDKVT
-
-$make run ARGS="decode ???? PLAYFIREXMBCDGHKNOQSTUVWZ"
-AGOXODFOODBOOKISACOXOKBOOK
-
-Note: AGO_ODFOODBOOKISACO_OKBOOK < easy to eliminate x's by hand.
-___
-
-$make run ARGS="encode TODAYISAGOODDAYTODIE OZAKDIREXMBCVGHYNPQSTUFWL"
-UZMENRPDBKIMMENUIMBV
-
-$make run ARGS="decode UZMENRPDBKIMMENUIMBV OZAKDIREXMBCVGHYNPQSTUFWL"
-TODAYISAGOODDAYTODIE
-
-
-
-
-_____________________
-CODING:
 Strategies to break this up:
 
 Modularity is key to writing something like this. Writing a solution in small pieces that can be individually tested means you can make progress and test each step. It also means you have many small victories!
