@@ -1,0 +1,11 @@
+Program input:
+make run ARGS="encode ciphertext keytext"
+
+Output:
+encoded Text
+======================================
+Program input:
+make run ARGS="decode plaintext keytext"
+
+Output:
+decoded Text
