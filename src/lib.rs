@@ -19,7 +19,11 @@ fn prepare(plain: &str) -> Vec<char> {
         i += 2;
     }
     if chars.len() % 2 != 0 {
-        chars.push('Z');
+        if *chars.last().unwrap() == 'Z' {
+            chars.push('X');
+        } else {
+            chars.push('Z');
+        }
     }
 
     chars
@@ -144,6 +148,8 @@ mod tests {
             "VEEDAXAEKXKPYZ",
             prepare("VEEDAAEKKPY").iter().collect::<String>()
         );
+
+        assert_eq!("ZX", prepare("Z").iter().collect::<String>());
     }
 
     #[test]

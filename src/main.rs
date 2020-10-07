@@ -4,7 +4,7 @@ use std::{env, process};
 fn main() {
     let args: Vec<String> = env::args().collect();
     if args.len() != 4 {
-        eprintln!("program encode/decode text key");
+        eprintln!("program encode/decode [text] [key]");
         process::exit(1);
     }
 
