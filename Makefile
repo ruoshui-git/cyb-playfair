@@ -21,4 +21,7 @@ help:
 run:
 	$(RUN) $(ARGS)
 
-.PHONY: help run
+test:
+	@sh test.sh 2> /dev/null
+
+.PHONY: help run test

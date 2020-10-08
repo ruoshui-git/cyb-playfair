@@ -9,3 +9,6 @@ make run ARGS="decode plaintext keytext"
 
 Output:
 decoded Text
+
+make test: test program with test.sh (manual checking)
+tip: run "make -s test" for lower vebosity
