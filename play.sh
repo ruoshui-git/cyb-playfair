@@ -43,7 +43,7 @@ function puts_ok() {
 
 # print "fail" with red, no endline
 function puts_fail() {
-    puts_color failed ${RED}
+    puts_color FAILED ${RED}
     # printf "${RED}failed${NORMAL}"
 }
 
@@ -111,19 +111,29 @@ function run_all() {
 
     print_sep = 100
     
+    local is_ok=0
     if [ $nfailed -eq 0 ]; then
-        printf "test result: " 
-        puts_ok
-        echo "; $npassed passed; $nfailed failed"
+        is_ok=0
     else
-        printf "test result: "
-        puts_fail
-        echo "; $npassed passed; $nfailed failed"
+        is_ok=1
+        
+        puts_color FAILURES: ${RED}; echo;
 
         for failed in "${failed[@]}"; do
             print_fail_case "$failed"
         done
     fi 
+
+    echo
+    print_sep = 50
+
+    printf "test result: " 
+    if [ is_ok ]; then
+        puts_ok
+    else
+        puts_fail
+    fi
+    echo "; $npassed passed; $nfailed failed"
 }
 
 # --------------------------------------------
