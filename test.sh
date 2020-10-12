@@ -117,10 +117,11 @@ function run_all() {
         for failed in "${failed[@]}"; do
             print_fail_case "$failed"
         done
+        
+        print_sep = 50
     fi 
 
     echo
-    print_sep = 50
 
     printf "test result: " 
     if [ $nfailed -eq 0 ]; then
@@ -128,7 +129,7 @@ function run_all() {
     else
         puts_fail
     fi
-    echo "; $npassed passed; $nfailed failed"
+    echo ": $npassed passed; $nfailed failed"
 }
 
 # --------------------------------------------
