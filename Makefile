@@ -21,7 +21,14 @@ help:
 run:
 	$(RUN) $(ARGS)
 
+
+# Set SILENT to 's' if --quiet/-s set, otherwise ''.
+SILENT := $(findstring s,$(word 1, $(MAKEFLAGS)))
 test:
-	@sh test.sh 2> /dev/null
+ifeq ($(SILENT),s)
+	@bash test.sh
+else
+	@bash old_test.sh 2> /dev/null
+endif
 
 .PHONY: help run test

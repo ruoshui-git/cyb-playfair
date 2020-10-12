@@ -11,4 +11,5 @@ Output:
 decoded Text
 
 make test: test program with test.sh (manual checking)
+make test -s: test program with auto test script (which doesn't work when make silent mode isn't enabled, so by default it's switched off)
 tip: run "make -s test" for lower vebosity
