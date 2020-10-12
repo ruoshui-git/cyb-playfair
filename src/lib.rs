@@ -55,11 +55,13 @@ impl Playfair {
     }
 
     /// Lookup (row, col) of a char
-    fn lookup(&self, target: char) -> Option<(usize, usize)> {
+    /// 
+    /// Returns i32 in order to be compatible with self.char_at()
+    fn lookup(&self, target: char) -> Option<(i32, i32)> {
         for (rownum, row) in self.key.iter().enumerate() {
             for (colnum, c) in row.iter().enumerate() {
                 if *c == target {
-                    return Some((rownum, colnum));
+                    return Some((rownum as i32, colnum as i32));
                 }
             }
         }
@@ -67,8 +69,8 @@ impl Playfair {
     }
 
     /// Calculate wrapped position
-    fn char_at(&self, row: usize, col: usize) -> char {
-        self.key[row % 5][col % 5]
+    fn char_at(&self, row: i32, col: i32) -> char {
+        self.key[((row + 5) % 5) as usize][((col + 5) % 5) as usize]
     }
 
     /// Returns None if any of the pair is not found in the table; Assumes that input will not contain 'J'
@@ -187,9 +189,11 @@ mod tests {
     }
 
     #[test]
-    fn test_regress() {
+    fn wrapping_from_negative_index() {
         let encoder = Playfair::new("ERTYUIOPASDFGQWHKLZXCVBNM");
-        let string = "IAMIUSTIAMMINIELLY";
-        assert_eq!(string, encoder.decode(&encoder.encode(&string)))
+        let plain = "IAMIUSTIAMMINIELLY";
+        let encoded = "DQCSEIEPSNCSCATHZT";
+        assert_eq!(encoded, encoder.encode(&plain));
+        assert_eq!(plain, encoder.decode(&encoded));
     }
 }
