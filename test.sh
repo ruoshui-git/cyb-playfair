@@ -7,6 +7,9 @@ passed=()
 # Format: (+"command|expected|received")
 failed=()
 
+# Return code
+has_failure=0
+
 function reset() {
     cases=()
     passed=()
@@ -53,7 +56,7 @@ function t() {
 
 function test_one() {
     # split test test string into command and expected output
-    IFS='|' read -r -a parts <<< "$1"
+    IFS='|' read -r -a parts <<<"$1"
     local arg=${parts[0]}
     local run="$(make_command "$arg")"
     local expected="${parts[1]}"
@@ -62,14 +65,16 @@ function test_one() {
     printf "case: \"$arg\"... "
 
     # run command and capture last line, suppress stdout (cargo prints a lot to stdout)
-    local received="$(eval $run 2> /dev/null | tail -1)"
+    local received="$(eval $run 2>/dev/null | tail -1)"
 
     if [ "$received" = "$expected" ]; then
-        passed+=("$1") 
-        puts_ok; echo;
-    else 
+        passed+=("$1")
+        puts_ok
+        echo
+    else
         failed+=("$1|$received")
-        puts_fail; echo;
+        puts_fail
+        echo
     fi
 }
 
@@ -81,7 +86,7 @@ function print_sep() {
 
 function print_fail_case() {
     # split fail string into parts
-    IFS='|' read -r -a parts <<< "$1"
+    IFS='|' read -r -a parts <<<"$1"
     local args=${parts[0]}
     local expected=${parts[1]}
     local received=${parts[2]}
@@ -94,15 +99,14 @@ function print_fail_case() {
     echo "received: $received"
 }
 
-
 function run_all() {
     local ncases="${#cases[@]}"
 
-    echo "  Testing $ncases cases...";
+    echo "  Testing $ncases cases..."
 
     print_sep = 100
 
-    for tcase in "${cases[@]}"; do 
+    for tcase in "${cases[@]}"; do
         test_one "$tcase"
     done
 
@@ -110,20 +114,23 @@ function run_all() {
     local nfailed="${#failed[@]}"
 
     print_sep = 100
-    
+
     if [ $nfailed -ne 0 ]; then
-        puts_color FAILURES: ${RED}; echo;
+        has_failure=1
+
+        puts_color FAILURES: ${RED}
+        echo
 
         for failed in "${failed[@]}"; do
             print_fail_case "$failed"
         done
-        
+
         print_sep = 50
-    fi 
+    fi
 
     echo
 
-    printf "test result: " 
+    printf "test result: "
     if [ $nfailed -eq 0 ]; then
         puts_ok
     else
@@ -139,7 +146,6 @@ function run_all() {
 function make_command() {
     printf "make run ARGS=\"$1\"" # make_command "decode 1" -> echo "make run ARGS=decode 1"
 }
-
 
 # test cases here
 # t args_to_make expected_value
@@ -161,3 +167,5 @@ t "decode DQCSEIEPSNCSCATHZT ERTYUIOPASDFGQWHKLZXCVBNM" IAMIUSTIAMMINIELLY
 t "encode JIMJAMESJACK QWERTYUIOPASDFGHKLZXCVBNM" PLPBYDBTDUSVVN
 t "decode PLPBYDBTDUSVVN QWERTYUIOPASDFGHKLZXCVBNM" IXIMIAMESIACKZ
 run_all
+
+exit $has_failure
