@@ -185,4 +185,11 @@ mod tests {
             encoder.decode("UZMENRPDBKIMMENUIMBV")
         );
     }
+
+    #[test]
+    fn test_regress() {
+        let encoder = Playfair::new("ERTYUIOPASDFGQWHKLZXCVBNM");
+        let string = "IAMIUSTIAMMINIELLY";
+        assert_eq!(string, encoder.decode(&encoder.encode(&string)))
+    }
 }

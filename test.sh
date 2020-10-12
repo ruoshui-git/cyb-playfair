@@ -111,12 +111,7 @@ function run_all() {
 
     print_sep = 100
     
-    local is_ok=0
-    if [ $nfailed -eq 0 ]; then
-        is_ok=0
-    else
-        is_ok=1
-        
+    if [ $nfailed -ne 0 ]; then
         puts_color FAILURES: ${RED}; echo;
 
         for failed in "${failed[@]}"; do
@@ -128,7 +123,7 @@ function run_all() {
     print_sep = 50
 
     printf "test result: " 
-    if [ is_ok ]; then
+    if [ $nfailed -eq 0 ]; then
         puts_ok
     else
         puts_fail
