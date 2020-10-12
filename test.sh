@@ -34,8 +34,13 @@ BLINK=$(tput blink)
 REVERSE=$(tput smso)
 UNDERLINE=$(tput smul)
 
+# Print the given str in given color only if stdout is terminal
 function puts_color() {
-    printf "$2$1${NORMAL}"
+    if [ -t 1 ]; then
+        printf "$2$1${NORMAL}"
+    else
+        printf "$1"
+    fi
 }
 
 # print "ok" with color, no endline
@@ -62,7 +67,7 @@ function test_one() {
     local expected="${parts[1]}"
 
     # hit the user that we are making progress
-    printf "case: \"$arg\"... "
+    printf "test \"$arg\"... "
 
     # run command and capture last line, suppress stdout (cargo prints a lot to stdout)
     local received="$(eval $run 2>/dev/null | tail -1)"
@@ -102,9 +107,9 @@ function print_fail_case() {
 function run_all() {
     local ncases="${#cases[@]}"
 
+    echo
     echo "  Testing $ncases cases..."
-
-    print_sep = 100
+    echo
 
     for tcase in "${cases[@]}"; do
         test_one "$tcase"
@@ -136,7 +141,7 @@ function run_all() {
     else
         puts_fail
     fi
-    echo ": $npassed passed; $nfailed failed"
+    echo ". $npassed passed; $nfailed failed"
 }
 
 # --------------------------------------------
